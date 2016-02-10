@@ -1,0 +1,81 @@
+<meta charset="utf-8">
+<ion-view view-title="Admin Commande" cache-view="false">
+  <ion-content overflow-scroll="true">
+    <br/><br/>
+    <button class="button button-balanced" ng-click="ajouterCommande()">
+      Ajouter Commande
+    </button>
+    <!----------------------------- Affichage des commandes ---------------->
+    <div class="row">
+      <div class="col col-33" ng-repeat="arrayCommande in commandes">
+        <div ng-repeat="commande in arrayCommande track by $index">
+          <ion-list>
+            <ul class="list">
+              <li class="item">
+                <h2>{{commande.id}} {{commande.user.firstName}} {{commande.user.lastName}}</h2>
+                <button class="button icon ion-close-round" ng-click="deleteCommande(commande)"></button>
+
+                <div ng-if="commande.statut !== 'pret' || commande.afficher === true">
+                  <!----------------------------- Affichage des plats ---------------->
+                  <div ng-if="commande.plats.length">
+                    Plats :
+                    <div ng-repeat="plat in commande.plats">
+                      <h3>{{plat.name}}</h3>
+                      <!----------------------------- Affichage des sauces ---------------->
+                      <div ng-if="plat.sauces.length">
+                        Sauces : <p ng-repeat="sauce in plat.sauces">{{sauce.name}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <!----------------------------- Affichage des Boissons ---------------->
+                  <div ng-if="commande.boissons.length">
+                    Boissons : <p ng-repeat="boisson in commande.boissons">{{boisson.name}}</p>
+                  </div>
+
+                  <!----------------------------- Affichage des Dessert ---------------->
+                  <div ng-if="commande.desserts.length">
+                    Dessert : <p ng-repeat="dessert in commande.desserts">{{dessert.name}}</p>
+                  </div>
+
+                                    <span class="item-note">
+                                    </span>
+
+                </div>
+                <div ng-if="commande.statut !== 'pret'">
+                  <button class="button button-balanced" ng-click="commandePrete(commande)">
+                    Prête
+                  </button>
+
+
+                  <button class="button icon ion-gear-a" ng-click="displayMessage = !displayMessage"></button>
+                  <div class="list" ng-if="displayMessage">
+                    <button class="button icon-left ion-alert-circled" ng-click="signalerCommande(commande)">Signaler
+                      commande
+                    </button>
+                  </div>
+
+                </div>
+                <div ng-if="commande.statut === 'pret'">
+                  <button class="button button-balanced" ng-click="validerCommande(commande)">
+                    Valider
+                  </button>
+                  <button class="button icon ion-gear-a" ng-click="displayMessage = !displayMessage"></button>
+                  <div class="list" ng-if="displayMessage">
+                    <button class="button icon-left ion-alert-circled" ng-click="signalerCommande(commande)">Signaler
+                      commande
+                    </button>
+                  </div>
+                  <button ng-if="!commande.afficher" class="button icon ion-plus-circled"
+                          ng-click="afficherCommande(commande, true)"></button>
+                  <button ng-if="commande.afficher" class="button icon ion-minus-circled"
+                          ng-click="afficherCommande(commande, false)"></button>
+                </div>
+              </li>
+            </ul>
+          </ion-list>
+        </div>
+      </div>
+
+    </div>
+  </ion-content>
+</ion-view>

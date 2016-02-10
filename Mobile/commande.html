@@ -1,0 +1,37 @@
+<ion-view view-title="Nouvelle commande" cache-view="false">  
+    <ion-content>
+        <div class="choix-commande">
+            <!--<img src="img/LetsCookWS.png" class="imageTitle">-->
+            <button class="button button-full item" ng-class="{'commande-boisson-selected': (classe('plat').isSelected)}" ng-click="changeViewPlats()">
+                Plats
+                <div class="commande-boissons-detils" ng-if="(classe('plat').isSelected)">
+                    <i class="ion-pizza commande-icon-indication"></i>
+                    <div class="commande-nb-boissons"> {{user.nbPlats}} </div>
+                </div>
+            </button>
+
+            <button class="button button-full item" ng-class="{'commande-boisson-selected': (classe('boisson').isSelected)}" ui-sref="tab.boissons">
+                Boissons
+                <div class="commande-boissons-detils" ng-if="(classe('boisson').isSelected)">
+                    <i class="ion-wineglass commande-icon-indication"></i>
+                    <div class="commande-nb-boissons"> {{user.nbBoisson}} </div>
+                </div>
+            </button>
+            <button class="button button-full item" ng-class="{'commande-boisson-selected': (classe('dessert').isSelected)}" ui-sref="tab.desserts">
+                Desserts
+                <div class="commande-boissons-detils" ng-if="(classe('dessert').isSelected)">
+                    <i class="ion-icecream commande-icon-indication" ng-if="(classe('dessert').isSelected)"></i>
+                    <div class="commande-nb-boissons">{{user.nbDesserts}}</div>
+                </div>
+            </button>
+        </div>
+        <div class="commande-block-confirmation">
+            <button class="button button-assertive commande-bouton-confirme" ng-click="commande.annuler()">
+                Annuler 
+            </button>
+            <button class="button button-balanced commande-bouton-confirme" ng-click="commande.submit()">
+                Valider {{commande.prix}} €
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

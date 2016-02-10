@@ -1,0 +1,56 @@
+<ion-view view-title="Admin Accueil" cache-view="false">
+    <ion-content overflow-scroll="true">
+        <br/><br/>
+        <span ng-show="success">{{success}}</span>
+        <span ng-show="error">{{error}}</span>
+
+        <div class="list">
+            <form ng-submit="addMessage(message)" id="formAddMessage" novalidate>
+                <label class="item item-input">
+                    <input type="text" placeholder="Titre" ng-model="message.titre">
+                </label>
+                <label class="item item-input">
+                    <textarea form="formAddMessage" rows="4" placeHolder="Entrez le message" ng-model="message.message"></textarea>
+                </label>
+                <label class="item item-button firstCase">
+                    <button class="button button-assertive" type="submit">
+                        Ajouter le message
+                    </button>
+                </label>
+            </form>
+        </div>
+
+        <div class="list">
+            <form ng-submit="addEvent(event, time)" id="formAddEvent" novalidate>
+                <label class="item item-input">
+                    <input type="text" placeholder="Nom" ng-model="event.name">
+                    <span  ng-show="infos.eventName"> Veuillez entrer un nom d'au moins 3 caract�res</span>
+                </label>
+                <label class="item item-input">
+                    <textarea form="formAddEvent" rows="4" placeHolder="Description" ng-model="event.description"></textarea>
+                    <span ng-show="infos.eventDesc"> Veuillez entrer une description</span>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Lien" ng-model="event.lien">
+                </label>
+                <label class="item item-input">
+                    <input type="date" ng-model="event.date">
+                    <span ng-show="infos.eventDate"> </span>
+                </label>
+                <label class="item item-input">
+                    <input type="time" ng-model="time">
+                    <span ng-show="infos.eventTime"> Veuillez entrer une heure</span>
+                </label>
+                <label class="item item-input">
+                    <input type="text" placeholder="Lieu" ng-model="event.lieu">
+                    <span ng-show="infos.eventLieu"> </span>
+                </label>
+                <label class="item item-button firstCase">
+                    <button class="button button-assertive" type="submit">
+                        Créer l'evènement
+                    </button>
+                </label>
+            </form>
+        </div>
+    </ion-content>
+</ion-view>

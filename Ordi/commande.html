@@ -1,0 +1,296 @@
+<!-- ----------------------------------------------------------Vue d'ordinateur--------------------------------------------------------------------- -->
+<ion-view view-title="Nouvelle commande" cache-view="false">
+  <ion-content overflow-scroll="true">
+    <div class="row">
+      <div class="col col-33">
+        <div>
+          <img src="img/LetsCookWS.png" class="imageTitle">
+          <button ng-class="colorButton(0)" ng-click="displayViewPlats()">
+            Plats
+            <div class="commande-boissons-detils" ng-if="(classe('plat').isSelected)">
+              <i class="ion-pizza commande-icon-indication"></i>
+              <div class="commande-nb-boissons"> {{user.nbPlats}}</div>
+            </div>
+          </button>
+
+          <button ng-class="colorButton(2)" ng-click="setDisplay(2)">
+            Boissons
+            <div class="commande-boissons-detils" ng-if="(classe('boisson').isSelected)">
+              <i class="ion-wineglass commande-icon-indication"></i>
+              <div class="commande-nb-boissons"> {{user.nbBoisson}}</div>
+            </div>
+          </button>
+          <button ng-class="colorButton(3)" ng-click="setDisplay(3)">
+            Desserts
+            <div class="commande-boissons-detils" ng-if="(classe('dessert').isSelected)">
+              <i class="ion-icecream commande-icon-indication"></i>
+              <div class="commande-nb-boissons">{{user.nbDesserts}}</div>
+            </div>
+          </button>
+          <button ng-class="colorButton(4)" ng-click="setDisplay(4)">
+            Récapitulatif
+          </button>
+        </div>
+        <div class="commande-block-confirmation">
+          <button class="button button-assertive commande-bouton-confirme" ng-click="commande.annuler()">
+            Annuler
+          </button>
+          <button class="button button-balanced commande-bouton-confirme" ng-click="commande.submit()">
+            Valider {{commande.prix}} €
+          </button>
+        </div>
+
+      </div>
+
+
+      <div class="col col-66" ng-if="display == 0">
+        <div ng-controller="PlatsCtrl">
+          <div>
+            <div class="item item-divider">
+              Selectionner votre plat
+            </div>
+            <ion-radio ng-model="plats.isSandwich" ng-value="true">Hot Dog</ion-radio>
+            <ion-radio ng-model="plats.isSandwich" ng-value="false">Plats Cuisiné</ion-radio>
+          </div>
+          <br/>
+          <ion-list>
+            <div ng-if="plats.isSandwich">
+              <div class="item item-divider">
+                Selectionner votre sauce
+              </div>
+              <ion-checkbox ng-model="sauce.isChecked" ng-checked="sauce.isChecked" ng-repeat="sauce in choix.sauces">
+                <div class="details-sauces">
+                  {{sauce.name}}
+                </div>
+              </ion-checkbox>
+            </div>
+          </ion-list>
+
+          <ion-list>
+            <div ng-if="!plats.isSandwich">
+              <div class="item item-divider">
+                Selectionner votre plat préparer
+              </div>
+              <div class="details-platsPrepares" ng-repeat="platsPrepare in choix.platsPrepares">
+                <ion-checkbox ng-model="platsPrepare.isChecked" ng-checked="platsPrepare.isChecked"
+                              ng-click="checkPlat(platsPrepare, choix.platsPrepares)" ng-show="!platsPrepare.isChecked">
+
+                  {{platsPrepare.name}}
+                  <span class="item-note item-details-note">
+                      {{platsPrepare.prix}}€
+                  </span>
+
+                </ion-checkbox>
+
+                <ion-item ng-if="platsPrepare.isChecked">
+                  {{platsPrepare.name}}
+                  <span class="item-note item-details-note">
+                    {{platsPrepare.prix}}€
+                  </span>
+                  <span class="item-note">
+                    <button class="button button-light icon ion-minus-circled"
+                            ng-click="changeNb(platsPrepare,-1)"></button>
+                      {{platsPrepare.nb}}
+                    <button class="button button-light icon ion-plus-circled"
+                            ng-click="changeNb(platsPrepare,1)"></button>
+                  </span>
+                </ion-item>
+              </div>
+            </div>
+          </ion-list>
+
+          <button ng-click="submit(choix.sauces, 'sauces')"
+                  class="item button button-full button-balanced plats-submit" ng-if="plats.isSandwich">
+            Valider mon Hot Dog 1.5 €
+          </button>
+
+          <button ng-click="submit(choix.platsPrepares, 'platsPrep')"
+                  class="item button button-full button-balanced plats-submit" ng-if="!plats.isSandwich">
+            Valider mon plat préparé {{choix.platsPrepares.prix}} €
+          </button>
+        </div>
+      </div>
+
+
+
+      <div class="col col-66" ng-show="display == 1">
+        <div ng-controller="NewPlatsCtrl">
+          <ion-list show-delete="shouldShowDelete" ng-repeat="plat in plats">
+            <ion-item>
+              <ion-delete-button class="ion-minus-circled"
+                                 ng-click="deletePlat(plat)">
+              </ion-delete-button>
+              {{plat.name}}
+                            <span ng-if="plat.sauces.length" ng-repeat="sauce in plat.sauces">
+                                 - {{sauce.name}}
+                            </span>
+                            <span class="item-note">
+                                {{plat.prix}} € <span ng-if="plat.nb >1">x {{plat.nb}}</span>
+                            </span>
+            </ion-item>
+          </ion-list>
+
+          <ion-toggle ng-model="shouldShowDelete" toggle-class="toggle-assertive">
+            <div class="new-plat-supprimer col text-center">
+              Supprimer un plat
+            </div>
+          </ion-toggle>
+
+          <button class="button button-full button-positive item" ng-click="addPlat()">
+            Ajouter un nouveau plat
+          </button>
+
+          <button class="button button-full button-balanced item" ng-click="submit()">
+            Valider {{$root.user.commande.plats.prix}} €
+          </button>
+        </div>
+      </div>
+
+
+
+      <div class="col col-66" ng-show="display == 2">
+        <div ng-controller="BoissonCtrl">
+          <ion-list>
+            <div class="item item-divider">
+              Choisissez une ou plusieures boissons:
+            </div>
+            <div class="liste-boissons" ng-repeat="boiss2show in boisson.boissons">
+              <ion-checkbox ng-model="boiss2show.isChecked" ng-checked="boiss2show.isChecked"
+                            ng-click="checkBoisson(boiss2show, boisson)" ng-show="!boiss2show.isChecked">
+                <div class="details-boissons">
+                  {{boiss2show.name}}
+                  <span class="item-note item-details-note" ng-if="boiss2show.prix != 0.5">
+                      {{boiss2show.prix}}€
+                  </span>
+                </div>
+              </ion-checkbox>
+
+              <ion-item ng-if="boiss2show.isChecked">
+                {{boiss2show.name}}
+                  <span class="item-note item-details-note" ng-if="boiss2show.prix != 0.5">
+                  {{boiss2show.prix}}€
+                  </span>
+                  <span class="item-note">
+                    <button class="button button-light icon ion-minus-circled"
+                            ng-click="changeNb(boiss2show,-1)"></button>
+                      {{boiss2show.nb}}
+                    <button class="button button-light icon ion-plus-circled"
+                            ng-click="changeNb(boiss2show,1)"></button>
+                  </span>
+              </ion-item>
+            </div>
+          </ion-list>
+          <button class="item button button-full button-balanced valide-boissons" ng-click="boisson.submit(boisson)">
+            Valider ! {{boisson.currentPrice}} €
+          </button>
+        </div>
+      </div>
+
+
+      <div class="col col-66" ng-show="display == 3">
+        <div ng-controller="DessertCtrl as dessertCtrl">
+          <ion-list>
+            <div class="item item-divider">
+              Choisissez un ou plusieurs desserts:
+            </div>
+            <div ng-repeat="dess2schow in dessert.desserts">
+
+              <ion-checkbox ng-model="dess2schow.isChecked" ng-checked="dess2schow.isChecked"
+                            ng-click="checkDessert(dess2schow, dessert)" ng-show="!dess2schow.isChecked">
+                <div class="details-boissons">
+                  {{dess2schow.name}}
+                    <span class="item-note item-details-note" ng-if="dess2schow.prix != 0.8">
+                    {{dess2schow.prix}}€
+                    </span>
+                </div>
+              </ion-checkbox>
+
+              <ion-item ng-if="dess2schow.isChecked">
+                {{dess2schow.name}}
+                  <span class="item-note item-details-note" ng-if="dess2schow.prix != 0.8">
+                  {{dess2schow.prix}}€
+                  </span>
+                  <span class="item-note">
+                    <button class="button button-light icon ion-minus-circled"
+                            ng-click="changeNb(dess2schow,-1)"></button>
+                      {{dess2schow.nb}}
+                    <button class="button button-light icon ion-plus-circled"
+                            ng-click="changeNb(dess2schow,1)"></button>
+                  </span>
+              </ion-item>
+
+            </div>
+          </ion-list>
+          <button class="item button button-full button-balanced valide-boissons" ng-click="dessert.submit(dessert)">
+            Valider ! {{dessert.currentPrice}} €
+          </button>
+
+
+        </div>
+      </div>
+
+
+      <div class="col col-66" ng-show="display == 4">
+        <div class="list">
+          <!----------------------------- Affichage des plats ---------------->
+          <div ng-if="$root.user.commande.plats.length">
+            <div class="item item-divider">
+              Plats :
+                            <span class="item-note">
+                                <b>{{$root.user.commande.plats.prix}} €</b>
+                            </span>
+            </div>
+
+            <div class="item" ng-repeat="plat in $root.user.commande.plats">
+              {{plat.name}}
+              <!----------------------------- Affichage des sauces ---------------->
+                            <span ng-if="plat.sauces.length" ng-repeat="sauce in plat.sauces">
+                                 - {{sauce.name}}
+                            </span>
+                            <span class="item-note">
+                                {{plat.prix}} € <span ng-if="plat.nb >1">x {{plat.nb}}</span>
+                            </span>
+
+            </div>
+          </div>
+          <!----------------------------- Affichage des Boissons ---------------->
+          <div ng-if="$root.user.commande.boissons.length">
+            <div class="item item-divider">
+              Boissons :
+                            <span class="item-note">
+                                <b>{{$root.user.commande.boissons.prix}} €</b>
+                            </span>
+            </div>
+            <div class="item" ng-repeat="boisson in $root.user.commande.boissons">
+              {{boisson.name}}
+                            <span class="item-note">
+                                {{boisson.prix}} € <span ng-if="boisson.nb >1">x {{boisson.nb}}</span>
+                            </span>
+            </div>
+
+          </div>
+
+          <!----------------------------- Affichage des Dessert ---------------->
+          <div ng-if="$root.user.commande.desserts.length">
+            <div class="item item-divider">
+              Desserts :
+                            <span class="item-note">
+                                <b>{{$root.user.commande.desserts.prix}} €</b>
+                            </span>
+            </div>
+            <div class="item" ng-repeat="dessert in $root.user.commande.desserts">
+              {{dessert.name}}
+                            <span class="item-note">
+                                {{dessert.prix}} € <span ng-if="dessert.nb >1">x {{dessert.nb}}</span>
+                            </span>
+            </div>
+          </div>
+        </div>
+        <button class="button button-balanced commande-bouton-confirme" ng-click="commande.submit()">
+          Valider {{commande.prix}} €
+        </button>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>
+

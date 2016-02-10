@@ -1,0 +1,38 @@
+
+<ion-view view-title="Votre choix" cache-view="false">  
+    <ion-content overflow-scroll="true">
+        <div class="choix-commande">
+            <button class="button button-full button-balanced item" ng-click="nouvelleCommande()" >Nouvelle Commande</button>
+            <button class="button button-full button-balanced item" ui-sref="tab.favoris">Favoris</button>
+        </div>
+        <div class="item item-divider">
+            Commande en cours : 
+        </div>
+        <ion-list ng-model="commandes" ng-repeat="commande in commandes">
+
+            <a class="item ">
+                {{displayInformation(commande)}}
+                <span class="item-note">
+                    {{commande.date| date:'EEEE dd MMMM yyyy H:mm'}}
+                </span>
+            </a>
+
+        </ion-list>
+    </ion-content>  
+</ion-view>
+<!-- <form name="myForm" ng-submit="foo()" novalidate>
+    <label>
+     </label>
+    <input name="prenom" type="text" required ng-minlength="2" ng-maxlength="20" />
+    
+    <label> : </label>
+    <input name="nom" type="text" ng-maxlength="30" />
+    
+    <label> : </label>
+    <input name="mail" type="email" required />
+    
+    <label>Âge : </label>
+    <input name="age" type="number" required />
+    
+    <input type="submit" value="Envoyer" />
+</form> -->

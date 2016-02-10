@@ -1,0 +1,97 @@
+<meta charset="utf-8">
+<ion-view view-title="Mon Compte" cache-view="false">
+  <ion-content overflow-scroll="true">
+    <div class="list">
+      <div>
+        <h1 class="item item-divider">Général : {{user.firstName}} {{user.lastName}}</h1>
+        <p class="item">Adresse email : {{user.email}}</p>
+        <form class="form"
+              name="form"
+              ng-submit="changeUserParams()"
+              novalidate>
+          <div class="item">
+            Filière :
+            <label for="CGP"> CGP</label>
+            <input type="radio" name="filiere" id="CGP" value="CGP" ng-model="user.filiere">
+            <label for="ETI"> ETI</label>
+            <input type="radio" name="filiere" id="ETI" value="ETI" ng-model="user.filiere">
+            <label for="IRC"> IRC</label>
+            <input type="radio" name="filiere" id="IRC" value="IRC" ng-model="user.filiere">
+          </div>
+          <div class="item">
+            Année :
+            <label for="3">3</label>
+            <input type="radio" name="annee" id="3" value="3" ng-model="user.annee">
+            <label for="4">4</label>
+            <input type="radio" name="annee" id="4" value="4" ng-model="user.annee">
+            <label for="5">5</label>
+            <input type="radio" name="annee" id="5" value="5" ng-model="user.annee">
+            <label for="0">Plus</label>
+            <input type="radio" name="annee" id="0" value="0" ng-model="user.annee">
+          </div>
+          <button class="button button-balanced" type="submit">
+            Sauvegarder
+          </button>
+        </form>
+      </div>
+      <br/>
+      <!--<div>-->
+      <!--<fieldset>-->
+      <!--<h3>Commande</h3>-->
+      <!--Recevoir un mail lorsque la commande est prête-->
+      <!--<label class="toggle toggle-assertive">-->
+      <!--<input type="checkbox" ng-model="user.sendMail">-->
+      <!--<div class="track">-->
+      <!--<div class="handle"></div>-->
+      <!--</div>-->
+      <!--</label>-->
+      <!--</fieldset>-->
+      <!--</div>-->
+      <br/>
+      <!--<div class="row">-->
+        <!--<div class="col col-100">-->
+          <button class="button button-balanced" ng-click="setChangeMDP()" ng-if="!changeMDP">
+            Changer de mot de passe
+          </button>
+
+          <form class="form" name="myForm" ng-submit="changePassword()" novalidate ng-if="changeMDP">
+              <h3 class="item item-divider">Changer de mot de passe</h3>
+              <label class="item item-input">
+                <span class="input-label">Ancien mot de passe</span>
+                <input type="password"
+                       name="oldPassword"
+                       id="old-password"
+                       ng-model="passwords.oldPassword">
+              </label>
+              <label class="item item-input">
+                <span class="input-label">Nouveau mot de passe</span>
+                <input type="password"
+                       class="form-control"
+                       name="newPassword"
+                       id="new-password"
+                       ng-model="passwords.newPassword"
+                       ng-minlength="6"
+                       ng-maxlength="20">
+              </label>
+              <label class="item item-input">
+                <span class="input-label">Confirmer le mot de passe</span>
+                <input type="password"
+                       class="form-control"
+                       name="confirmPassword"
+                       id="confirm-password"
+                       ng-model="passwords.confirmPassword">
+              </label>
+
+              <button type="submit" class="button button-balanced">
+                Enregistrer le mot de passe
+              </button>
+
+          </form>
+        </div>
+      <!--</div>-->
+    <!--</div>-->
+    <button ng-click="control.signout()" class="button button-assertive">
+      Déconnexion
+    </button>
+  </ion-content>
+</ion-view>
